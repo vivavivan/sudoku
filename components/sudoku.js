@@ -13,27 +13,35 @@ app.component('sudoku', {
         <tbody>
             <tr v-for="(row, rowindex) in board" :id="'row' + rowindex" :class="'sudoku_row sr' + rowindex%3">
             <td v-for="(cell, cellindex) in row" :id="'cell' + rowindex + cellindex" :class="'sudoku_column sc' + cellindex%3" @mouseenter="mouseEnter($event, rowindex, cellindex)" @mouseleave="mouseLeave($event, rowindex, cellindex)">
-                <input class="sudoku_input" size="1" autocomplete="off" :readonly="cell!=0" :id="'input' + rowindex + cellindex" :value="cell==0?'':cell">
+                <input class="sudoku_input" size="1" autocomplete="off" :readonly="cell!=0" :id="'input' + rowindex + cellindex" :value="cell==0?'':cell" v-on:click="rowncolumn">
             </td>
             </tr>
         </tbody>
     </table>
     </div>
     `,
-    data() {
-        return {
-        }
-    },
     methods: {
         mouseEnter: function(element, row, column){
-            // console.log("enter:", element.toElement, row, column);
-            element.toElement.style.backgroundColor = 'lightgray';
+            this.crosshair(row, column, 'lightgray');
+            element.toElement.style.backgroundColor = 'gray';
         },
         mouseLeave: function(element, row, column){
-            // console.log("leave", element.fromElement, row, column);
-            element.fromElement.style.backgroundColor = 'white';
-        }
+            this.crosshair(row, column, '#f2f2f2');
+        },
+        crosshair(row, column, color) {
+            for (let columnindex = 0; columnindex < 9; columnindex++) {
+                document.getElementById('cell' + row + columnindex).style.backgroundColor = color;       
+            }
+
+            for (let rowindex = 0; rowindex < 9; rowindex++) {
+                document.getElementById('cell' + rowindex + column).style.backgroundColor = color;
+            }
+        },
+        rowncolumn() {
+            console.log(elementBoard);
+
+        },
     },
     computed: {
-    }
+    } 
 })
